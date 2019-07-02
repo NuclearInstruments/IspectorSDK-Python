@@ -12,10 +12,14 @@ class ispector_sdk:
         BASELINE_1024 =1024
         BASELINE_512 =512
         BASELINE_256 =256
-        BASELINE_128 = 256
+        BASELINE_128 = 128
         BASELINE_64 = 64
         BASELINE_32 = 32
-        BASELINE_16 = 32
+        BASELINE_16 = 16
+
+    class HVCompensation(Enum):
+        DISABLE_COMPENSATION = "digital"
+        ENABLE_COMPENSATION = "temperature"
 
     API_ENDPOINT = ""
 
@@ -38,16 +42,16 @@ class ispector_sdk:
 
     def set_hv_compensation(self, mode, temp_coeff):
         JSON_COMMAND = '{"command": "SET_CHANNEL_CONFIG", "channel_config": [{"id": 0, "HV_MODE": ' + \
-                       mode + ', "TCoeff": ' + \
+                       mode.value + ', "TCoeff": ' + \
                        self.__float_to_str(temp_coeff) + '}], "store_flash": false}'
         r = requests.post(url=(self.API_ENDPOINT + "/set_config.cgi"), data=JSON_COMMAND)
 
     def set_hv_cfg(self, ramp, maxI, maxV, on_starup):
-        JSON_COMMAND = '{"command" : "SET_CHANNEL_CONFIG","channel_config" :[{"id" : 0,"' \
-                       '"MaxV" : '+ self.__float_to_str(maxV) +',' \
-                       '"MaxI" : '+ self.__float_to_str(maxI)+',' \
-                       '"MaxT" : 0,' \
-                       '"RAMP" : '+ self.float_to_str(ramp) +',' \
+        JSON_COMMAND = '{"command" : "SET_CHANNEL_CONFIG","channel_config" :[{"id" : 0,' + \
+                       '"MaxV" : '+ self.__float_to_str(maxV) +',' + \
+                       '"MaxI" : '+ self.__float_to_str(maxI)+',' + \
+                       '"MaxT" : 0,' + \
+                       '"RAMP" : '+ self.float_to_str(ramp) +',' + \
                        '"HV_PWRON" : '+ self.__bool_to_str(on_starup)  +'}],"store_flash" : false}'
         r = requests.post(url=(self.API_ENDPOINT + "/set_config.cgi"), data=JSON_COMMAND)
 
@@ -90,3 +94,15 @@ class ispector_sdk:
     def getSpectrum(self):
         r = requests.get(url=(self.API_ENDPOINT + "/spectrum.cgi"))
         return json.loads(r.text)["data"]
+
+    def resetSpectrum(self):
+        r = requests.get(url=(self.API_ENDPOINT + "/resetspectrum.cgi"))
+        return
+
+    def runSpectrum(self):
+        r = requests.get(url=(self.API_ENDPOINT + "/mca_run.cgi"))
+        return
+
+    def stopSpectrum(self):
+        r = requests.get(url=(self.API_ENDPOINT + "/mca_stop.cgi"))
+        return
