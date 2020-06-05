@@ -51,7 +51,7 @@ class ispector_sdk:
                        '"MaxV" : '+ self.__float_to_str(maxV) +',' + \
                        '"MaxI" : '+ self.__float_to_str(maxI)+',' + \
                        '"MaxT" : 0,' + \
-                       '"RAMP" : '+ self.float_to_str(ramp) +',' + \
+                       '"RAMP" : '+ self.__float_to_str(ramp) +',' + \
                        '"HV_PWRON" : '+ self.__bool_to_str(on_starup)  +'}],"store_flash" : false}'
         r = requests.post(url=(self.API_ENDPOINT + "/set_config.cgi"), data=JSON_COMMAND)
 
