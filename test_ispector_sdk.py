@@ -7,6 +7,7 @@ I1 = ispector_sdk("192.168.50.2")
 
 I1.set_hv_basic(True,41.5)
 ChStatus = I1.getChannelStatus()
+print(ChStatus["ICR"])
 
 I1.configureMCA(trigger_threshold=100,
                 trigger_inibit=300,
